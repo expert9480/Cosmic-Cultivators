@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class Main extends JFrame {
 
     public Main() {
-        super("Farming in Space");
+        super("Cosmic Cultivators");
         setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
         Game play = new Game();
         ((Component) play).setFocusable(true);
