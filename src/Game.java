@@ -10,20 +10,29 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.stream.Stream;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     private BufferedImage back;
-    private int key, count;
+    private int key, count, lineCount;
     private String screen;
     private Sound sound;
-    private Icons play, playSelected;
-    private Boolean playBoolean;
+    private Icons play, playSelected, logo;
+    private Boolean playBoolean, sprint;
     private Farmer farmer;
+    private ArrayList cropList;
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenHeight;
@@ -39,9 +48,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screenHeight = screenSize.height;
+        // screenHeight = screenSize.height;
         screenWidth = screenSize.width;
+        //screenHeight = screenSize.height-(int)(screenSize.height*.083);
+        screenHeight = Main.screenSizeFigureOuter();
+        
+
         key = -1;
         sound = new Sound();
         screen = "start";
@@ -51,12 +63,15 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         bestTime = 0;
 
         // iniztialize here
-        farmer = new Farmer(new ImageIcon("farmerIdle.png"), 100, 100, 0, 0, 75, 75, false, false);
+        cropList = new ArrayList<>();
+        farmer = new Farmer(new ImageIcon("assets/farmer/idleDown.png"), 100, 100, 0, 0, 96, 96, false, false);
+        sprint = false;
 
-        play = new Icons("unselectedPlay.png", 25, screenHeight - 400, 300, 300);
-        playSelected = new Icons("selectedPlay.png", 25, screenHeight - 400, 300, 300);
+        play = new Icons("assets/icons/unselectedPlay.png", 25, screenHeight - 400, 300, 300);
+        playSelected = new Icons("assets/icons/selectedPlay.png", 25, screenHeight - 400, 300, 300);
         playBoolean = false;
 
+        logo = new Icons("assets/icons/logo.png", 25, 100, 2264/2, 339/2);
     }
 
     public void screen(Graphics g2d) {
@@ -67,6 +82,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 break;
             case "mainFarm":
                 drawFarmer(g2d);
+                //saveSystem();
                 // Base
                 break;
             case "greenhouse1":
@@ -75,17 +91,18 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 break;
             case "greenhouseBig":
                 break;
+            case "home":
+                break;
         }
     }
 
     public void drawStartScreen(Graphics g2d) {
         // create start screen
+        g2d.drawImage(new ImageIcon(logo.getPic()).getImage(), logo.getX(), logo.getY(), logo.getW(), logo.getH(),this);
         if (playBoolean == true) {
-            g2d.drawImage(new ImageIcon(playSelected.getPic()).getImage(), playSelected.getX(), playSelected.getY(),
-                    playSelected.getW(), playSelected.getH(), this);
+            g2d.drawImage(new ImageIcon(playSelected.getPic()).getImage(), playSelected.getX(), playSelected.getY(), playSelected.getW(), playSelected.getH(), this);
         } else {
-            g2d.drawImage(new ImageIcon(play.getPic()).getImage(), play.getX(), play.getY(), play.getW(), play.getH(),
-                    this);
+            g2d.drawImage(new ImageIcon(play.getPic()).getImage(), play.getX(), play.getY(), play.getW(), play.getH(), this);
         }
     }
 
@@ -95,14 +112,28 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     }
 
     public void move() {
-        if (((farmer.getDX() > 0) || (farmer.getDY() > 0)) || ((farmer.getDX() < 0) || (farmer.getDY() < 0))) {
-            farmer.setPic(new ImageIcon("farmerWalk.gif"));
-        } else {
-            farmer.setPic(new ImageIcon("farmerIdle.png"));
-        }
         // change screenwidth and height to image width and height
         farmer.move(screenWidth, screenHeight);
     }
+
+
+//     public void saveSystem(){
+//         File save = new File("save.txt");
+//         try {
+//             if (save.createNewFile()){}
+//             else{
+                
+// }
+//                 for (int i=3; i>); i++){
+//                     cropList.add(Files.readAllLines(Paths.get("save.txt")).get(i));
+
+//                 }
+//             }
+//         } catch (IOException e) {
+//             e.printStackTrace();
+//         }
+        
+//     }
 
     public void run() {
         try {
@@ -143,14 +174,40 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         key = e.getKeyCode();
         System.out.println(key);
 
-        if (key == 87)
-            farmer.setDy(-2);
-        if (key == 83)
-            farmer.setDy(2);
-        if (key == 65)
+        if (key == 16){
+            sprint = true;
+        }
+
+        if (key == 87){
+            farmer.setDy(-1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
+        }
+        if (key == 83){
+            farmer.setDy(1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
+        }
+        if (key == 65){
+            farmer.setDx(-1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
+        }
+        if (key == 68){
+            farmer.setDx(1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
+        }
+
+        if ((sprint) && farmer.getDX()==-1){
             farmer.setDx(-2);
-        if (key == 68)
+        }
+        else if ((sprint) && farmer.getDX()==1) {
             farmer.setDx(2);
+        }
+        else if ((sprint) && farmer.getDY()==-1) {
+            farmer.setDy(-2);
+        }
+        else if ((sprint) && farmer.getDY()==1) {
+            farmer.setDy(2);
+        }
+        
 
     }
 
@@ -158,10 +215,44 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void keyReleased(KeyEvent e) {
         key=e.getKeyCode();
-        if (key == 87 || key == 83)
+        
+        if (key == 16){
+            sprint = false;
+        }
+        
+        if (key == 87){
             farmer.setDy(0);
-        if (key == 65 || key == 68)
+            if ((farmer.getDX()==0)&&(farmer.getDY()==0))
+                farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+        }
+        if (key == 83){
+            farmer.setDy(0);
+            if ((farmer.getDX()==0)&&(farmer.getDY()==0))
+                farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+        }
+        if (key == 65){
             farmer.setDx(0);
+            if ((farmer.getDX()==0)&&(farmer.getDY()==0))
+                farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+        }
+        if (key == 68){
+            farmer.setDx(0);
+            if ((farmer.getDX()==0)&&(farmer.getDY()==0))
+                farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+        }
+
+        if (!(sprint) && farmer.getDX()==-2){
+            farmer.setDx(-1);
+        }
+        else if (!(sprint) && farmer.getDX()==2) {
+            farmer.setDx(1);
+        }
+        else if (!(sprint) && farmer.getDY()==-2) {
+            farmer.setDy(-1);
+        }
+        else if (!(sprint) && farmer.getDY()==2) {
+            farmer.setDy(1);
+        }
 
     }
 
