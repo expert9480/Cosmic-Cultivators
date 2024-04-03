@@ -36,4 +36,13 @@ public class Main extends JFrame {
         }
     }
 
+    public static int scale(){
+        if(Toolkit.getDefaultToolkit().getScreenSize().height==768){
+            return 4;
+        }
+        else {
+            return 6;
+        }
+    }
+
 }

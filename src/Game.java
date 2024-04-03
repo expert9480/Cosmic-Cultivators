@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,10 +30,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     private int key, count, lineCount;
     private String screen;
     private Sound sound;
-    private Icons play, playSelected, logo;
-    private Boolean playBoolean, sprint;
+    private Icons play, playSelected, logo, inventoryMenu;
+    private Boolean playBoolean, sprint, showInvetory;
     private Farmer farmer;
-    private ArrayList cropList;
+    private ArrayList <Crops> cropList;
+    private ArrayList <Icons> inventory;
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenHeight;
@@ -63,15 +65,22 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         bestTime = 0;
 
         // iniztialize here
-        cropList = new ArrayList<>();
-        farmer = new Farmer(new ImageIcon("assets/farmer/idleDown.png"), 100, 100, 0, 0, 96, 96, false, false);
+        farmer = new Farmer(new ImageIcon("assets/farmer/idleDown.png"), 100, 100, 0, 0, 16*Main.scale(), 16*Main.scale(), false, false);
         sprint = false;
 
-        play = new Icons("assets/icons/unselectedPlay.png", 25, screenHeight - 400, 300, 300);
-        playSelected = new Icons("assets/icons/selectedPlay.png", 25, screenHeight - 400, 300, 300);
+        play = new Icons(new ImageIcon("assets/icons/unselectedPlay.png"), 25, screenHeight - 400, 300, 300);
+        playSelected = new Icons(new ImageIcon("assets/icons/selectedPlay.png"), 25, screenHeight - 400, 300, 300);
         playBoolean = false;
 
-        logo = new Icons("assets/icons/logo.png", 25, 100, 2264/2, 339/2);
+        logo = new Icons(new ImageIcon("assets/icons/logo.png"), 25, 100, 2264/2, 339/2);
+        
+        inventory = new ArrayList<Icons>();
+        showInvetory = false;
+        //current img size of invetory 256x192
+        //inventory size scale needs tweaking
+        inventoryMenu = new Icons(new ImageIcon("assets/icons/inventory.png"), (screenWidth-(256*(Main.scale()-2)))/2, (screenHeight-(192*(Main.scale()-2)))/2, 256*(Main.scale()-2), 192*(Main.scale()-2));
+
+        cropList = new ArrayList<Crops>();
     }
 
     public void screen(Graphics g2d) {
@@ -81,9 +90,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 drawStartScreen(g2d);
                 break;
             case "mainFarm":
-                drawFarmer(g2d);
                 //saveSystem();
                 // Base
+                drawCrops(g2d);
+                drawFarmer(g2d);
+                drawInvetory(g2d);
                 break;
             case "greenhouse1":
                 break;
@@ -98,11 +109,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
     public void drawStartScreen(Graphics g2d) {
         // create start screen
-        g2d.drawImage(new ImageIcon(logo.getPic()).getImage(), logo.getX(), logo.getY(), logo.getW(), logo.getH(),this);
+        g2d.drawImage(logo.getPic().getImage(), logo.getX(), logo.getY(), logo.getW(), logo.getH(),this);
         if (playBoolean == true) {
-            g2d.drawImage(new ImageIcon(playSelected.getPic()).getImage(), playSelected.getX(), playSelected.getY(), playSelected.getW(), playSelected.getH(), this);
+            g2d.drawImage(playSelected.getPic().getImage(), playSelected.getX(), playSelected.getY(), playSelected.getW(), playSelected.getH(), this);
         } else {
-            g2d.drawImage(new ImageIcon(play.getPic()).getImage(), play.getX(), play.getY(), play.getW(), play.getH(), this);
+            g2d.drawImage(play.getPic().getImage(), play.getX(), play.getY(), play.getW(), play.getH(), this);
         }
     }
 
@@ -114,6 +125,23 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     public void move() {
         // change screenwidth and height to image width and height
         farmer.move(screenWidth, screenHeight);
+    }
+
+    public void addCrop(){
+        cropList.add(new Crops(new ImageIcon("assets/plants/testPlant/testPlant.png"),(farmer.getX()+(farmer.getW()/2)),(farmer.getY()+(farmer.getH()/2)), 32, 32));
+    }
+
+    public void drawCrops(Graphics g2d){
+        for (Crops c: cropList){
+            g2d.drawImage(c.getPic().getImage(), c.getX(), c.getY(), c.getW(), c.getH(), this);
+        }
+    }
+
+    public void drawInvetory(Graphics g2d){
+        if (showInvetory==true){
+            g2d.drawImage(inventoryMenu.getPic().getImage(), inventoryMenu.getX(), inventoryMenu.getY(), inventoryMenu.getW(), inventoryMenu.getH(), this);
+            
+        }
     }
 
 
@@ -215,7 +243,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void keyReleased(KeyEvent e) {
         key=e.getKeyCode();
-        
+
+        if ((key==69) && (screen!="start")){
+            showInvetory=!showInvetory;
+        }
+
         if (key == 16){
             sprint = false;
         }
@@ -278,8 +310,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void mousePressed(java.awt.event.MouseEvent m) {
         // m.getButton()==1 is Left Click
+        //2 is middle click
+        //3 is right click
+
         if ((playBoolean == true) && (screen == "start")) {
             screen = "mainFarm";
+        }
+        if ((screen == "mainFarm") && (m.getButton()==3)){
+            addCrop();
         }
 
     }

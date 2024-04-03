@@ -1,6 +1,6 @@
 import javax.swing.ImageIcon;
 
-public class Icons {
+public class Crops {
 
 	private ImageIcon pic;
 	private int x;
@@ -9,20 +9,20 @@ public class Icons {
 	private int height;
 	private int dx;
 	private int dy;
-	private boolean moveup;
+
+        //temp crop, in future may need sub classes
 	
-	public Icons() {
-		pic=new ImageIcon();
+	public Crops() {
+		pic= new ImageIcon();
 		x=0;
 		y=0;
 		width=0;
 		height=0;
 		dx=0;
 		dy=0;
-		moveup=false;
 	}
 	//still pictures
-	public Icons(ImageIcon s, int x1, int y1, int w1, int h1) {
+	public Crops(ImageIcon s, int x1, int y1, int w1, int h1) {
 		pic=s;
 		x=x1;
 		y=y1;
