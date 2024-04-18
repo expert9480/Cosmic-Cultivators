@@ -58,6 +58,10 @@ public class Icons {
 	public ImageIcon getPic() {
 		return pic;
 	}
+	public void setPic(ImageIcon p) {
+		pic = p;
+	}
+	
 	public int getX() {
 		return x;
 	}

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -30,11 +31,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     private int key, count, lineCount;
     private String screen;
     private Sound sound;
-    private Icons play, playSelected, logo, inventoryMenu;
-    private Boolean playBoolean, sprint, showInvetory;
+    private Icons play, playSelected, logo, inventoryMenu, house, tempAirlock;
+    private Boolean playBoolean, sprint, showInvetory, airlockCreation;
     private Farmer farmer;
     private ArrayList <Crops> cropList;
     private ArrayList <Icons> inventory;
+    private ArrayList <Airlocks> airlocks;
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenHeight;
@@ -73,6 +75,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         playBoolean = false;
 
         logo = new Icons(new ImageIcon("assets/icons/logo.png"), 25, 100, 2264/2, 339/2);
+        house = new Icons(new ImageIcon("assets/buildings/house.png"), (screenWidth-(128*(Main.scale())))/2, (screenHeight-(72*(Main.scale())))/2, 128*(Main.scale()), 72*(Main.scale()));
+        //tempAirlock= new Icons(new ImageIcon("assets/buildings/airlock.png"), (house.getX()-(32*(Main.scale())))/2, (house.getY()-(32*(Main.scale())))/2, 32*(Main.scale()), 32*(Main.scale()));
+        tempAirlock= new Icons(new ImageIcon("assets/buildings/airlock.png"), (house.getX()+(house.getW()/2))-(32*(Main.scale()))/2, house.getY()+house.getH()-(Main.scale()*2), 32*(Main.scale()+2), 32*(Main.scale()+2));
         
         inventory = new ArrayList<Icons>();
         showInvetory = false;
@@ -81,6 +86,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         inventoryMenu = new Icons(new ImageIcon("assets/icons/inventory.png"), (screenWidth-(256*(Main.scale()-2)))/2, (screenHeight-(192*(Main.scale()-2)))/2, 256*(Main.scale()-2), 192*(Main.scale()-2));
 
         cropList = new ArrayList<Crops>();
+        airlocks = new ArrayList<Airlocks>();
+        airlockCreation = false;
+
+        
     }
 
     public void screen(Graphics g2d) {
@@ -88,6 +97,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             case "start":
                 // Start Screen
                 drawStartScreen(g2d);
+                if (airlockCreation == false){
+                    createAirlockArray();
+                    airlockCreation = true;
+                }
                 break;
             case "mainFarm":
                 //saveSystem();
@@ -103,6 +116,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             case "greenhouseBig":
                 break;
             case "home":
+                g2d.drawImage(house.getPic().getImage(), house.getX(), house.getY(), house.getW(), house.getH(),this);
+                drawAirlock(g2d);
+                drawCrops(g2d);
+                drawFarmer(g2d);
+                drawInvetory(g2d);
                 break;
         }
     }
@@ -116,35 +134,83 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             g2d.drawImage(play.getPic().getImage(), play.getX(), play.getY(), play.getW(), play.getH(), this);
         }
     }
-
+    
     public void drawFarmer(Graphics g2d) {
         g2d.drawImage(farmer.getPic().getImage(), farmer.getX(), farmer.getY(), farmer.getW(), farmer.getH(), this);
         move();
     }
 
+    public int returnCurrentBackgroundWidth(){
+        if (screen == "home")
+            return house.getX();
+        else
+            return 0;
+    }
+    public int returnCurrentBackgroundHeight(){
+        if (screen == "home")
+            return house.getY();
+        else
+            return 0;
+    }
+    public int returnCurrentBackgroundScaleW(){
+        if (screen == "home")
+            //return ((screenWidth-(128*(Main.scale())))/2) + (128*(Main.scale()));
+            return house.getX() + house.getW();
+        else
+            return screenWidth;
+    }
+    public int returnCurrentBackgroundScaleH(){
+        if (screen == "home")
+            //return ((screenHeight-(72*(Main.scale())))/2) + (72*(Main.scale()));
+            return house.getY() + house.getH();
+        else
+            return screenHeight;
+    }
+    
+    public void drawAirlock(Graphics g2d){
+        for (Airlocks a: airlocks){
+            if (a.getCurscreen() == screen){
+                g2d.drawImage(a.getPic().getImage(), a.getX(), a.getY(), a.getW(), a.getH(), this);
+            }
+        }
+    } 
+    
+    public void createAirlockArray(){
+        //add the other airlocks here
+        airlocks.add(new Airlocks (new ImageIcon("assets/buildings/airlock.png"), (house.getX()+(house.getW()/2))-(32*(Main.scale()))/2, house.getY()+house.getH()-(Main.scale()*2), 32*(Main.scale()+2), 32*(Main.scale()+2), "home", "mainFarm"));
+    }
+
+    
     public void move() {
         // change screenwidth and height to image width and height
-        farmer.move(screenWidth, screenHeight);
+        //account for the image being in a diff location than top corner
+        farmer.move(returnCurrentBackgroundWidth(), returnCurrentBackgroundHeight(), returnCurrentBackgroundScaleW(), returnCurrentBackgroundScaleH());
     }
 
     public void addCrop(){
-        cropList.add(new Crops(new ImageIcon("assets/plants/testPlant/testPlant.png"),(farmer.getX()+(farmer.getW()/2)),(farmer.getY()+(farmer.getH()/2)), 32, 32));
+        cropList.add(new Crops(new ImageIcon("assets/plants/testPlant/testPlant.png"),(farmer.getX()+(farmer.getW()/2)),(farmer.getY()+(farmer.getH()/2)), 32, 32, screen));
     }
 
     public void drawCrops(Graphics g2d){
         for (Crops c: cropList){
-            g2d.drawImage(c.getPic().getImage(), c.getX(), c.getY(), c.getW(), c.getH(), this);
+            if (screen == c.getScreen())
+                g2d.drawImage(c.getPic().getImage(), c.getX(), c.getY(), c.getW(), c.getH(), this);
         }
     }
 
     public void drawInvetory(Graphics g2d){
         if (showInvetory==true){
             g2d.drawImage(inventoryMenu.getPic().getImage(), inventoryMenu.getX(), inventoryMenu.getY(), inventoryMenu.getW(), inventoryMenu.getH(), this);
-            
         }
     }
 
+    public boolean Collision(Farmer b, Icons a) {
+		return a.getX()+a.getW()>=b.getX()&&a.getX()<=b.getX()+b.getW()&&a.getY()+a.getH()>=b.getY()&&a.getY()<=b.getY()+b.getH();
+	}
 
+    public boolean airlockCollision(Farmer b, Airlocks a) {
+		return a.getX()+a.getW()>=b.getX()&&a.getX()<=b.getX()+b.getW()&&a.getY()+a.getH()>=b.getY()&&a.getY()<=b.getY()+b.getH();
+	}
 //     public void saveSystem(){
 //         File save = new File("save.txt");
 //         try {
@@ -204,6 +270,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         if (key == 16){
             sprint = true;
+        }
+
+        if (key == 72){
+            screen = "home";
+            // farmer.setX(tempAirlock.getX()+(tempAirlock.getW()/2));
+            // farmer.setY(tempAirlock.getY());
         }
 
         if (key == 87){
@@ -316,8 +388,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         if ((playBoolean == true) && (screen == "start")) {
             screen = "mainFarm";
         }
-        if ((screen == "mainFarm") && (m.getButton()==3)){
+        if ((screen == "mainFarm") && (m.getButton()==3) && !(Collision(farmer, tempAirlock))){
             addCrop();
+        }
+
+        for (Airlocks a: airlocks){
+            if ((a.getCurscreen() == screen) && (airlockCollision(farmer, a)) && (m.getButton()==3)){
+                screen = a.getGTS();
+            }
         }
 
     }

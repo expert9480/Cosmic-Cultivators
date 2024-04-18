@@ -9,6 +9,7 @@ public class Crops {
 	private int height;
 	private int dx;
 	private int dy;
+	private String screen;
 
         //temp crop, in future may need sub classes
 	
@@ -20,14 +21,16 @@ public class Crops {
 		height=0;
 		dx=0;
 		dy=0;
+		screen = "";
 	}
 	//still pictures
-	public Crops(ImageIcon s, int x1, int y1, int w1, int h1) {
+	public Crops(ImageIcon s, int x1, int y1, int w1, int h1, String sc) {
 		pic=s;
 		x=x1;
 		y=y1;
 		width=w1;
 		height=h1;
+		screen = sc;
 	}
 
 	// public Icons(String s, int x1, int y1, int w1, int h1, int dx1, int dy1) {
@@ -71,6 +74,10 @@ public class Crops {
 	}
 	public int getH() {
 		return height;
+	}
+
+	public String getScreen() {
+		return screen;
 	}
 
 	// public void setDx(int c) {

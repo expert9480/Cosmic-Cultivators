@@ -83,21 +83,21 @@ public class Farmer {
 	}
 	
 	
-	public void move(int screenW, int screenH) {
+	public void move(int screenW, int screenH, int maxW, int maxH) {
 		//fix move method
 		x+=dx;
-		if (x+width>screenW) {
-			x=screenW-width;
+		if (x+width>maxW) {
+			x=maxW-width;
 		}
-		else if (x<0){
-			x=0;
+		else if (x<screenW){
+			x=screenW;
 		}
 		
 		y+=dy;
-		if (y+height>screenH)
-			y=screenH-height;
-		else if (y<0)
-			y=0;
+		if (y+height>maxH)
+			y=maxH-height;
+		else if (y<screenH)
+			y=screenH;
 	}
 	
 	public boolean Collision(Farmer b) {
