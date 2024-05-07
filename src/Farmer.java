@@ -94,10 +94,11 @@ public class Farmer {
 		}
 		
 		y+=dy;
+		//
 		if (y+height>maxH)
 			y=maxH-height;
-		else if (y<screenH)
-			y=screenH;
+		else if (y<screenH-(height/2))
+			y=screenH-(height/2);
 	}
 	
 	public boolean Collision(Farmer b) {
