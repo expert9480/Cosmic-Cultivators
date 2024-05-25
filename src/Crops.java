@@ -10,6 +10,8 @@ public class Crops {
 	private int dx;
 	private int dy;
 	private String screen;
+	private Boolean waterStatus;
+	private double startTime;
 
         //temp crop, in future may need sub classes
 	
@@ -22,15 +24,19 @@ public class Crops {
 		dx=0;
 		dy=0;
 		screen = "";
+		waterStatus = false;
+		startTime = 0;
 	}
 	//still pictures
-	public Crops(ImageIcon s, int x1, int y1, int w1, int h1, String sc) {
+	public Crops(ImageIcon s, int x1, int y1, int w1, int h1, String sc, Boolean water, double st) {
 		pic=s;
 		x=x1;
 		y=y1;
 		width=w1;
 		height=h1;
 		screen = sc;
+		waterStatus = water;
+		startTime = st;
 	}
 
 	// public Icons(String s, int x1, int y1, int w1, int h1, int dx1, int dy1) {
@@ -61,6 +67,9 @@ public class Crops {
 	public ImageIcon getPic() {
 		return pic;
 	}
+	public void setPic(ImageIcon p) {
+		pic = p;
+	}
 	public int getX() {
 		return x;
 	}
@@ -80,6 +89,23 @@ public class Crops {
 		return screen;
 	}
 
+	public Boolean getWaterStatus() {
+		return waterStatus;
+	}
+	public void setWaterStatus(Boolean water) {
+		waterStatus = water;
+	}	
+
+	public double getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(double st) {
+		startTime = st;
+	}
+
+	public boolean Collision(Farmer b) {
+		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
+	}
 	// public void setDx(int c) {
 	// 	dx=c;
 	// }

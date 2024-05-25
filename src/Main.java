@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.GraphicsEnvironment;
 
 public class Main extends JFrame {
 
