@@ -364,6 +364,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     public void drawPlanters(Graphics g2d) {
         for (Planters p : planters) {
             if (p.getScreen() == screen) {
+                if (p.getWatered() == true){
+                    p.setPic(new ImageIcon ("assets/buildings/planterWet.png"));
+                }
+                else{
+                    p.setPic(new ImageIcon ("assets/buildings/planter.png"));
+                }
                 g2d.drawImage(p.getPic().getImage(), p.getX(), p.getY(), p.getW(), p.getH(), this);
             }
         }
@@ -401,39 +407,83 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     }
 
     public void cropGrowth(){
-        curtime=(System.currentTimeMillis()-time)/1000;
-        for (Crops c: cropList){
-            if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower1.png") && ((curtime-c.getStartTime() >= 5.00) && (curtime-c.getStartTime() <= 6.00))){
-                c.setPic(new ImageIcon("assets/plants/kornflower/kornflower2.png"));
-                
-            }
-            else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry1.png") && ((curtime-c.getStartTime() >= 5.00) && (curtime-c.getStartTime() <= 6.00))){
-                c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry2.png"));
-                
-            }
-            else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat1.png") && ((curtime-c.getStartTime() >= 5.00) && (curtime-c.getStartTime() <= 6.00))){
-                c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat2.png"));
-                
-            }
-            else if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower2.png") && ((curtime-c.getStartTime() >= 10.00) && (curtime-c.getStartTime() <= 11.00))){
-                c.setPic(new ImageIcon("assets/plants/kornflower/kornflower3.png"));
-                
-            }
-            else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry2.png") && ((curtime-c.getStartTime() >= 10.00) && (curtime-c.getStartTime() <= 11.00))){
-                c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry3.png"));
-                
-            }
-            else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat2.png") && ((curtime-c.getStartTime() >= 10.00) && (curtime-c.getStartTime() <= 11.00))){
-                c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat3.png"));
-                
+        curtime=((System.currentTimeMillis() - time) / 1000);
+        for (Planters p: planters){
+            for (Crops c: cropList){
+                if ((p.Collision(c) == true)){
+                    if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower1.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 120.00) && (curtime-c.getStartTime() <= 121.00))){
+                        c.setPic(new ImageIcon("assets/plants/kornflower/kornflower2.png"));
+                        c.setStartTime(curtime);
+                        p.setWatered(false);
+                        
+                    }
+                    else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry1.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 30.00) && (curtime-c.getStartTime() <= 31.00))){
+                        c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry2.png"));
+                        c.setStartTime(curtime);
+                        p.setWatered(false);
+                        
+                    }
+                    else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat1.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 60.00) && (curtime-c.getStartTime() <= 61.00))){
+                        c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat2.png"));
+                        c.setStartTime(curtime);
+                        p.setWatered(false);
+                        
+                    }
+                    else if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower2.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 120.00) && (curtime-c.getStartTime() <= 121.00))){
+                        c.setPic(new ImageIcon("assets/plants/kornflower/kornflower3.png"));
+                        p.setWatered(false);
+                        
+                    }
+                    else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry2.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 30.00) && (curtime-c.getStartTime() <= 31.00))){
+                        c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry3.png"));
+                        p.setWatered(false);
+                        
+                    }
+                    else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat2.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 60.00) && (curtime-c.getStartTime() <= 61.00))){
+                        c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat3.png"));
+                        p.setWatered(false);
+                        
+                    }
+                }
             }
         }
+
+
+        // for (Crops c: cropList){
+        //     if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower1.png") && ((curtime-c.getStartTime() >= 120.00) && (curtime-c.getStartTime() <= 121.00))){
+        //         c.setPic(new ImageIcon("assets/plants/kornflower/kornflower2.png"));
+        //         c.setStartTime(curtime);
+                
+        //     }
+        //     else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry1.png") && ((curtime-c.getStartTime() >= 30.00) && (curtime-c.getStartTime() <= 31.00))){
+        //         c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry2.png"));
+        //         c.setStartTime(curtime);
+                
+        //     }
+        //     else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat1.png") && ((curtime-c.getStartTime() >= 60.00) && (curtime-c.getStartTime() <= 61.00))){
+        //         c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat2.png"));
+        //         c.setStartTime(curtime);
+                
+        //     }
+        //     else if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower2.png") && ((curtime-c.getStartTime() >= 120.00) && (curtime-c.getStartTime() <= 121.00))){
+        //         c.setPic(new ImageIcon("assets/plants/kornflower/kornflower3.png"));
+                
+        //     }
+        //     else if ((c.getPic().getDescription()=="assets/plants/gooseberry/gooseberry2.png") && ((curtime-c.getStartTime() >= 30.00) && (curtime-c.getStartTime() <= 31.00))){
+        //         c.setPic(new ImageIcon("assets/plants/gooseberry/gooseberry3.png"));
+                
+        //     }
+        //     else if ((c.getPic().getDescription()=="assets/plants/celestialWheat/celestialwheat2.png") && ((curtime-c.getStartTime() >= 60.00) && (curtime-c.getStartTime() <= 61.00))){
+        //         c.setPic(new ImageIcon("assets/plants/celestialWheat/celestialwheat3.png"));
+                
+        //     }
+        // }
     }
 
     public Boolean addCrop() {
         for (Planters p: planters){
             //if ((farmer.getX() > p.getX() && farmer.getX() < p.getX() + p.getW()) && (farmer.getY() > p.getY() && farmer.getY() < p.getY() + p.getH())){
-            if ((p.Collision(farmer) == true) && (p.getHasCrop() == false)){
+            if ((p.Collision(farmer) == true) && (p.getHasCrop() == false) && (p.getScreen() == screen)){
                 for (Inventory i: inventory){
                     if (selectedItem == i.getSlot()){
                         if (i.getPic().getDescription() == ("assets/plants/kornflower/kornflowerSeeds.png")){
@@ -662,6 +712,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                     //set w and h
                     i.setW(64);
                     i.setH(64);
+                    if (selectedItem == i.getSlot()){ 
+                        // g2d.setColor(java.awt.Color.RED);
+                        // g2d.drawRect(i.getX(), i.getY(), i.getW(), i.getH());
+                        i.setH(i.getH()+10);
+                        i.setW(i.getW()+10);
+                    }
                 }   
                 }
                 for (Inventory i : inventory) {
@@ -1004,7 +1060,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     public void keyPressed(KeyEvent e) {
 
         key = e.getKeyCode();
-        //System.out.println(key);
+        System.out.println(key);
 
         if (key == 16) {
             sprint = true;
@@ -1029,66 +1085,66 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             screen = "greenhouse1";
         }
 
-        // if (key == 87) {
-        //     //-1
-        //     farmer.setDy(-(Main.scale()-3));
-        //     farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
-        // }
-        // if (key == 83) {
-        //     farmer.setDy((Main.scale()-3));
-        //     farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
-        // }
-        // if (key == 65) {
-        //     //-1
-        //     farmer.setDx(-(Main.scale()-3));
-        //     farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
-        // }
-        // if (key == 68) {
-        //     farmer.setDx((Main.scale()-3));
-        //     farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
-        // }
-
-        // //-1
-        // if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
-        //     farmer.setDx(-2*(Main.scale()-3));
-        //     //1
-        // } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
-        //     farmer.setDx(2*(Main.scale()-3));
-        // } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
-        //     farmer.setDy(-2*(Main.scale()-3));
-        // } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
-        //     farmer.setDy(2*(Main.scale()-3));
-        // }
         if (key == 87) {
             //-1
-            farmer.setDy(-1);
+            farmer.setDy(-(Main.scale()-3));
             farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
         }
         if (key == 83) {
-            farmer.setDy(1);
+            farmer.setDy((Main.scale()-3));
             farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
         }
         if (key == 65) {
             //-1
-            farmer.setDx(-1);
+            farmer.setDx(-(Main.scale()-3));
             farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
         }
         if (key == 68) {
-            farmer.setDx(1);
+            farmer.setDx((Main.scale()-3));
             farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
         }
 
         //-1
-        if ((sprint) && farmer.getDX() == -1) {
-            farmer.setDx(-2*1);
+        if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
+            farmer.setDx(-2*(Main.scale()-3));
             //1
-        } else if ((sprint) && farmer.getDX() == 1) {
-            farmer.setDx(2*1);
-        } else if ((sprint) && farmer.getDY() == -1) {
-            farmer.setDy(-2*1);
-        } else if ((sprint) && farmer.getDY() == 1) {
-            farmer.setDy(2*1);
+        } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
+            farmer.setDx(2*(Main.scale()-3));
+        } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
+            farmer.setDy(-2*(Main.scale()-3));
+        } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
+            farmer.setDy(2*(Main.scale()-3));
         }
+        // if (key == 87) {
+        //     //-1
+        //     farmer.setDy(-1);
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
+        // }
+        // if (key == 83) {
+        //     farmer.setDy(1);
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
+        // }
+        // if (key == 65) {
+        //     //-1
+        //     farmer.setDx(-1);
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
+        // }
+        // if (key == 68) {
+        //     farmer.setDx(1);
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
+        // }
+
+        // //-1
+        // if ((sprint) && farmer.getDX() == -1) {
+        //     farmer.setDx(-2*1);
+        //     //1
+        // } else if ((sprint) && farmer.getDX() == 1) {
+        //     farmer.setDx(2*1);
+        // } else if ((sprint) && farmer.getDY() == -1) {
+        //     farmer.setDy(-2*1);
+        // } else if ((sprint) && farmer.getDY() == 1) {
+        //     farmer.setDy(2*1);
+        // }
 
     }
 
@@ -1103,6 +1159,29 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             //     moveItemsInInventory(KeyEvent.getKeyText(key));
             // }
             showHotbar = !showHotbar;
+        }
+
+        if (key == 49){
+            selectedItem = 1;
+        }
+        if (key == 50){
+            selectedItem = 2;
+        }
+        if (key == 51){
+            selectedItem = 3;
+        }
+        if (key == 52){
+            selectedItem = 4;
+        }
+
+        if ((key == 69) && (screen == "home") && (showTerminal == true)) {
+            if (showRepairs == true){
+                showTerminal = !showTerminal;
+                showInvetory = !showInvetory;
+            }
+            else {
+                showTerminal = !showTerminal;
+            }
         }
 
         if ((key == 27) && (screen != "start")) {
@@ -1126,6 +1205,56 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             screen = "mainFarm";
         } else {
             playBoolean = false;
+        }
+        
+        //add the watering animation
+        if ((key==70) && ((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig"))){
+            for (Planters p: planters){
+                if (p.Collision(farmer)){
+                    for (Crops c: cropList){
+                        if (p.Collision(c) && (p.getWatered() == false)){
+                            if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
+                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterDown.gif"));
+                            }
+                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
+                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterUp.gif"));
+                            }
+                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
+                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterLeft.gif"));
+                            }
+                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
+                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterRight.gif"));
+                            }
+                
+                            int delay = 350;
+                            javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if ((farmer.getDX() == 0) && (farmer.getDY() == 0)){
+                                        p.setWatered(true);
+                                        c.setStartTime(curtime);
+                                    }
+                
+                                    if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterown.gif")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                    }
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterUp.gif")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                    }
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterLeft.gif")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                    }
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterRight.gif")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                    }
+                                }
+                            });
+                            timer.setRepeats(false);
+                            timer.start();
+                        }
+                    }
+                }
+            }
         }
 
         for (Airlocks a : airlocks) {
@@ -1275,6 +1404,43 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                         for (Planters p: planters){
                             if (p.Collision(farmer) == true){
                                 p.setHasCrop(false);
+                                if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantUp.gif"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantLeft.gif"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
+                                }
+                                
+                    
+                                int delay = 950;
+                                javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
+                                            
+                    
+                                        if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                        }
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantUp.gif")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                        }
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantLeft.gif")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                        }
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantRight.gif")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                        }
+                                    }
+                                });
+                                timer.setRepeats(false);
+                                timer.start();
                             }
                         }
                     }
@@ -1297,6 +1463,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             //then add crop
 
             if (addCrop()){
+                //addCrop();
                 if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
                     farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
                 }
@@ -1309,13 +1476,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
                     farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
                 }
+                
     
                 int delay = 950;
                 javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
-                            addCrop();
+                        //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
+                            
     
                         if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
                             farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
@@ -1387,17 +1555,20 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 showRepairs=true;
             }
 
-            if ((m.getX() >= gooseberryShop.getX() && m.getX() <= gooseberryShop.getX() + gooseberryShop.getW()) && (m.getY() >= gooseberryShop.getY() && m.getY() <= gooseberryShop.getY() + gooseberryShop.getH())){
-                addItemInInventory(new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"), 1);
-            }
-            else if ((cash >= 100) && (m.getX() >= kornflowerShop.getX() && m.getX() <= kornflowerShop.getX() + kornflowerShop.getW()) && (m.getY() >= kornflowerShop.getY() && m.getY() <= kornflowerShop.getY() + kornflowerShop.getH())){
-                addItemInInventory(new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 1);
-                cash -= 100;
-            }
-            else if ((cash >= 20) && (m.getX() >= celestialWheatShop.getX() && m.getX() <= celestialWheatShop.getX() + celestialWheatShop.getW()) && (m.getY() >= celestialWheatShop.getY() && m.getY() <= celestialWheatShop.getY() + celestialWheatShop.getH())){
-                addItemInInventory(new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"), 1);
-                cash -= 20;
-            }
+            //if (showSell == true){
+                if ((m.getX() >= gooseberryShop.getX() && m.getX() <= gooseberryShop.getX() + gooseberryShop.getW()) && (m.getY() >= gooseberryShop.getY() && m.getY() <= gooseberryShop.getY() + gooseberryShop.getH())){
+                    addItemInInventory(new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"), 1);
+                }
+                else if ((cash >= 100) && (m.getX() >= kornflowerShop.getX() && m.getX() <= kornflowerShop.getX() + kornflowerShop.getW()) && (m.getY() >= kornflowerShop.getY() && m.getY() <= kornflowerShop.getY() + kornflowerShop.getH())){
+                    addItemInInventory(new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 1);
+                    cash -= 100;
+                }
+                else if ((cash >= 20) && (m.getX() >= celestialWheatShop.getX() && m.getX() <= celestialWheatShop.getX() + celestialWheatShop.getW()) && (m.getY() >= celestialWheatShop.getY() && m.getY() <= celestialWheatShop.getY() + celestialWheatShop.getH())){
+                    addItemInInventory(new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"), 1);
+                    cash -= 20;
+                }
+                //add support to sell seeds?
+            //}
         }
 
     }

@@ -81,11 +81,14 @@ public class Planters {
     public Boolean getWatered(){
         return watered;
     }
-    public void setWatered(){
-        watered = !watered;
+    public void setWatered(boolean s){
+        watered = s;
     }
 
 	public boolean Collision(Farmer b) {
+		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
+	}
+	public boolean Collision(Crops b) {
 		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
 	}
 }
