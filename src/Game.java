@@ -25,14 +25,14 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener, Serializable {
+public class Game extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener, Serializable{
 
     private BufferedImage back;
     private int key, count, lineCount, cash, selectedItem;
     private String screen, font;
     private Sound sound;
     private Icons play, playSelected, logo, inventoryMenu, house, house2, save, sbg, load, hotbar, floorGreenhouse, glassGreenhouse, spaceBackground, controls, commonWalkWay, ground;
-    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseBerryShop;
+    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop;
     private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs;
     private Farmer farmer;
     private ArrayList<Crops> cropList;
@@ -109,8 +109,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         controls = new Icons(new ImageIcon("assets/icons/Controls.png"), 0, 0, 96*2, 69*2);
 
-        commonWalkWay = new Icons(new ImageIcon("assets/buildings/commonareaground.png"), (screenWidth - (256 * (Main.scale() - 2))) / 2, (screenHeight - (256 * (Main.scale() - 2))) / 2, (256* (Main.scale())) / 2, 256 * (Main.scale()) / 2);
-        ground = new Icons(new ImageIcon("assets/buildings/ground.png"), (screenWidth - (533 * (Main.scale() - 2))) / 2, (screenHeight - (454 * (Main.scale() - 2))) / 2, (533* (Main.scale())) / 2, 454 * (Main.scale()) / 2);
+        commonWalkWay = new Icons(new ImageIcon("assets/buildings/commonareaground.png"), (screenWidth - (256 * (Main.scale() - 3))) / 2, (screenHeight - (256 * (Main.scale() - 3))) / 2, (256 * (Main.scale() - 3)), (256 * (Main.scale() - 3)));
+        //ground = new Icons(new ImageIcon("assets/buildings/ground.png"), (screenWidth - (533 * (Main.scale() - 2))) / 2, (screenHeight - (454 * (Main.scale() - 2))) / 2, (533* (Main.scale())) / 2, 454 * (Main.scale()) / 2);
 
         cash = 0;
         kash = new Icons(new ImageIcon("assets/icons/kash.png"), 0, 0, 32 * (Main.scale()-2), 16 * (Main.scale()-2));
@@ -129,9 +129,15 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         showShop = false;
         showRepairs = false;
 
+        // shopBlank = new Icons(new ImageIcon("assets/terminal/shopBlank.png"), terminalMainScreen.getX(), terminalMainScreen.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+        // kornflowerShop = new Icons(new ImageIcon("assets/terminal/kornflowerShop.png"), (screenWidth - (16 * (Main.scale() - 2))) / 2, ((screenHeight - (16 * (Main.scale() - 2))) / 2) + ((Main.scale()-2)*15), 16*(Main.scale()-2), 16*(Main.scale()-2));
+        // celestialWheatShop = new Icons(new ImageIcon("assets/terminal/celestialWheatShop.png"), terminalMainScreen.getX() + 415, terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 85, 16*(Main.scale()-2), 16*(Main.scale()-2));
+        // gooseberryShop = new Icons(new ImageIcon("assets/terminal/gooseberryShop.png"), terminalMainScreen.getX() + 85, terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 105, 16*(Main.scale()-2), 16*(Main.scale()-2));
+        
         shopBlank = new Icons(new ImageIcon("assets/terminal/shopBlank.png"), terminalMainScreen.getX(), terminalMainScreen.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
-        kornflowerShop = new Icons(new ImageIcon("assets/terminal/kornflowerShop.png"), (screenWidth - (16 * (Main.scale() - 2))) / 2, ((screenHeight - (16 * (Main.scale() - 2))) / 2) + ((Main.scale()-2)*15), 16*(Main.scale()-2), 16*(Main.scale()-2));
-        celestialWheatShop = new Icons(new ImageIcon("assets/terminal/celestialWheatShop.png"), terminalMainScreen.getX()+(terminalMainScreen.getW() - (((16 * (Main.scale() - 2))/3)*2)) , ((screenHeight - (16 * (Main.scale() - 2))) / 2) + ((Main.scale()-2)*15), 16*(Main.scale()-2), 16*(Main.scale()-2));
+        kornflowerShop = new Icons(new ImageIcon("assets/terminal/kornflowerShop.png"), ((shopBlank.getX()) - 30 - (shopBlank.getW()/2)-(16*(Main.scale()-2))), ((screenHeight - (16 * (Main.scale() - 2))) / 2) + ((Main.scale()-2)*15), 16*(Main.scale()-2), 16*(Main.scale()-2));
+        celestialWheatShop = new Icons(new ImageIcon("assets/terminal/celestialWheatShop.png"), shopBlank.getX(), terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 85, 16*(Main.scale()-2), 16*(Main.scale()-2));
+        gooseberryShop = new Icons(new ImageIcon("assets/terminal/gooseberryShop.png"), shopBlank.getX() + 85, terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 105, 16*(Main.scale()-2), 16*(Main.scale()-2));
 
         planters = new ArrayList<Planters>();
     }   
@@ -349,7 +355,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (floorGreenhouse.getX() + (floorGreenhouse.getW())), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "greenhouse2", "mainFarm"));
         
         airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() - 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "home"));
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() + commonWalkWay.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouseBig"));
+        //greenhouseBig -  deactivated since there is no greenhouseBig 
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() + commonWalkWay.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "mainFarm"));
         airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + (commonWalkWay.getH()/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse1"));
         airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + ((commonWalkWay.getH()*2)/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse2"));
     }
@@ -393,20 +400,6 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 returnCurrentBackgroundScaleH());
     }
 
-    //this doesnt work, throws errors
-    public void pickUpCrops(){
-        for (Crops c: cropList){
-            //if ((farmer.getX() > c.getX() && farmer.getX() < c.getX() + c.getW()) && (farmer.getY() > c.getY() && farmer.getY() < c.getY() + c.getH())){
-            //if (c.Collision(farmer) == true){
-            if (c.getX()+c.getW()>=farmer.getX()&&c.getX()<=farmer.getX()+farmer.getW()&&c.getY()+c.getH()>=farmer.getY()&&c.getY()<=farmer.getY()+farmer.getH()){
-                if ((c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3")){
-                    addItemInInventory(c.getPic(), 1);
-                    cropList.remove(c);
-                }
-            }
-        }
-    }
-
     public void cropGrowth(){
         curtime=(System.currentTimeMillis()-time)/1000;
         for (Crops c: cropList){
@@ -444,22 +437,34 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 for (Inventory i: inventory){
                     if (selectedItem == i.getSlot()){
                         if (i.getPic().getDescription() == ("assets/plants/kornflower/kornflowerSeeds.png")){
+                            p.setHasCrop(true);
                             cropList.add(new Crops(new ImageIcon("assets/plants/kornflower/kornflower1.png"), (p.getX() + (p.getW()-(32*(Main.scale()-2)))), (p.getY() + (p.getH()/2)-(32*(Main.scale()-2))), 32*(Main.scale()-2), 32*(Main.scale()-2), screen, false, curtime));
                             //cropList.add(new Crops(new ImageIcon("assets/plants/kornflower/kornflower1.png"), ((p.getX() + (p.getW()/2)) - (32 * (Main.scale() - 2))) / 2, (p.getY() + (p.getH() / 2)), 32*(Main.scale()-2), 32*(Main.scale()-2), screen, false));
                             i.setQuantity(i.getQuantity()-1);
-                            p.setHasCrop(true);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                            
                             return true;
                         }
                         else if (i.getPic().getDescription() == ("assets/plants/gooseberry/gooseberrySeeds.gif")){
+                            p.setHasCrop(true);
                             cropList.add(new Crops(new ImageIcon("assets/plants/gooseberry/gooseberry1.png"),  (p.getX() + (p.getW()-(32*(Main.scale()-2)))), (p.getY() + (p.getH()/2)-(32*(Main.scale()-2))), 32*(Main.scale()-2), 32*(Main.scale()-2), screen, false, curtime));
                             i.setQuantity(i.getQuantity()-1);
-                            p.setHasCrop(true);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                            
                             return true;
                         }
                         else if (i.getPic().getDescription() == ("assets/plants/celestialWheat/celestialWheatSeeds.png")){
+                            p.setHasCrop(true);
                             cropList.add(new Crops(new ImageIcon("assets/plants/celestialWheat/celestialwheat1.png"),  (p.getX() + (p.getW()-(32*(Main.scale()-2)))), (p.getY() + (p.getH()/2)-(32*(Main.scale()-2))), 32*(Main.scale()-2), 32*(Main.scale()-2), screen, false, curtime));
                             i.setQuantity(i.getQuantity()-1);
-                            p.setHasCrop(true);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                            
                             return true;
                         }
                     }
@@ -538,24 +543,97 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             Color green = new Color(119, 199, 44);
             g2d.setColor(green);
             g2d.setFont(new java.awt.Font(font, java.awt.Font.BOLD, 10*(Main.scale()-2)));
-            g2d.drawString(Integer.toString(cash), (kash.getX()+kash.getW()), (kash.getY()+(kash.getH())));
+            g2d.drawString(Integer.toString(cash), (kash.getX()+(kash.getW())), (kash.getY()+5+(10*(Main.scale()-2))));
 
             if (showSell == true){
                 //draw sell screen
+                
             }
             else if (showShop == true){
                 //draw shop screen
+                
                 g2d.drawImage(shopBlank.getPic().getImage(), shopBlank.getX(), shopBlank.getY(), shopBlank.getW(), shopBlank.getH(), this);
                 g2d.drawImage(kornflowerShop.getPic().getImage(), kornflowerShop.getX(), kornflowerShop.getY(), kornflowerShop.getW(), kornflowerShop.getH(), this);
                 g2d.drawImage(celestialWheatShop.getPic().getImage(), celestialWheatShop.getX(), celestialWheatShop.getY(), celestialWheatShop.getW(), celestialWheatShop.getH(), this);
+                g2d.drawImage(gooseberryShop.getPic().getImage(), gooseberryShop.getX(), gooseberryShop.getY(), gooseberryShop.getW(), gooseberryShop.getH(), this);
             }
-            else if (showRepairs == true){
+            else if (showRepairs == true){terminalMainScreen.setX((screenWidth - (144 * (Main.scale() - 2))) / 2);
                 //draw repairs screen
+            }
+            //if (showSell ==true){
+            if (showSell ==true || showShop == true){
+                terminalMainScreen.setX(screenWidth/50);
+                terminalShopButton.setX(terminalMainScreen.getX());
+                shopBlank.setX(terminalMainScreen.getX());
+                kornflowerShop.setX(kornflowerShop.getX());
+                celestialWheatShop.setX(shopBlank.getX()+415);
+                gooseberryShop.setX(shopBlank.getX()+77);
+
+                showInvetory = true;
+                inventoryMenu.setX(screenWidth-10-inventoryMenu.getW());
+            }
+            //else if (showSell == false){ 
+            else if (showSell == false && showShop == false){  
+                terminalMainScreen.setX((screenWidth - (144 * (Main.scale() - 2))) / 2);
+                terminalShopButton.setX(terminalMainScreen.getX());
+
+                showInvetory = false;
+                inventoryMenu.setX((screenWidth - (256 * (Main.scale() - 2))) / 2);
+            }
+        }
+    }
+
+    int key3 = -1;
+    public void sellItem(int x, int y){
+        for (Inventory i: inventory){
+            if (i.getX() + i.getW() >= x && i.getX() <= x && i.getY() + i.getH() >= y&& i.getY() <= y){
+                key3=i.getSlot();
+            }
+        }
+
+        if (key3 != -1){
+            for (Inventory i: inventory){
+                if (i.getSlot() == key3){
+                    if (i.getPic().getDescription() != "assets/icons/empty.png"){
+                        if (i.getPic().getDescription() == "assets/plants/kornflower/kornflower3.png"){
+                            cash+=150;
+                            i.setQuantity(i.getQuantity()-1);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                            
+                        }
+                        else if (i.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3.png"){
+                            cash+=10;
+                            i.setQuantity(i.getQuantity()-1);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                            
+                        }
+                        else if (i.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3.png"){
+                            cash+=50;
+                            i.setQuantity(i.getQuantity()-1);
+                            if (i.getQuantity() == 0){
+                                i.setPic(new ImageIcon("assets/icons/empty.png"));
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     public void drawHotbar(Graphics g2d) {
+        if (showTerminal == true){
+            showHotbar = false;
+        }
+        else if (showInvetory == true){
+            showHotbar = false;
+        }
+        else if (showTerminal == false && showInvetory == false){
+            showHotbar = true;
+        }
         if (showHotbar == true){
             g2d.drawImage(hotbar.getPic().getImage(), hotbar.getX(), hotbar.getY(), hotbar.getW(), hotbar.getH(), this);
             for (Inventory i: inventory){
@@ -604,6 +682,16 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
     public void drawInvetory(Graphics g2d) {
         //add temp item into slot 1 is "q"
+        if (showTerminal == false){
+            // if (showInvetory == true){
+            //     showInvetory = true;
+            // }
+            // else if (showInvetory == false){
+            //     showInvetory = false;
+            // }
+            //showInvetory = false;
+            inventoryMenu.setX((screenWidth - (256 * (Main.scale() - 2))) / 2);
+        }
         if (showInvetory == true) {
             g2d.drawImage(inventoryMenu.getPic().getImage(), inventoryMenu.getX(), inventoryMenu.getY(), inventoryMenu.getW(), inventoryMenu.getH(), this);
             for (Inventory i : inventory) {
@@ -631,13 +719,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         //Add throw error if there are no empty slots and refuse the item
         for (Inventory i: inventory){
-            if (i.getPic().getDescription() == "assets/icons/empty.png"){
-                i.setPic(item);
-                i.setQuantity(quantity);
+            
+            if (i.getPic().getDescription() == item.getDescription()){
+                i.setQuantity(i.getQuantity()+quantity);
                 break;
             }
-            else if (i.getPic().getDescription() == item.getDescription()){
-                i.setQuantity(i.getQuantity()+quantity);
+            else if (i.getPic().getDescription() == "assets/icons/empty.png"){
+                i.setPic(item);
+                i.setQuantity(quantity);
                 break;
             }
         }
@@ -732,8 +821,6 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         int slot1 = -1;
         int slot2 = -1;
-        //i think something is broken here
-        //column 1 (minus the first slot) and column 3 arent working for moving items
         
         for (Inventory i : inventory) {
             
@@ -942,35 +1029,65 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             screen = "greenhouse1";
         }
 
+        // if (key == 87) {
+        //     //-1
+        //     farmer.setDy(-(Main.scale()-3));
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
+        // }
+        // if (key == 83) {
+        //     farmer.setDy((Main.scale()-3));
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
+        // }
+        // if (key == 65) {
+        //     //-1
+        //     farmer.setDx(-(Main.scale()-3));
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
+        // }
+        // if (key == 68) {
+        //     farmer.setDx((Main.scale()-3));
+        //     farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
+        // }
+
+        // //-1
+        // if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
+        //     farmer.setDx(-2*(Main.scale()-3));
+        //     //1
+        // } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
+        //     farmer.setDx(2*(Main.scale()-3));
+        // } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
+        //     farmer.setDy(-2*(Main.scale()-3));
+        // } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
+        //     farmer.setDy(2*(Main.scale()-3));
+        // }
         if (key == 87) {
             //-1
-            farmer.setDy(-(Main.scale()-3));
+            farmer.setDy(-1);
             farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
         }
         if (key == 83) {
-            farmer.setDy((Main.scale()-3));
+            farmer.setDy(1);
             farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
         }
         if (key == 65) {
             //-1
-            farmer.setDx(-(Main.scale()-3));
+            farmer.setDx(-1);
             farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
         }
         if (key == 68) {
-            farmer.setDx((Main.scale()-3));
+            farmer.setDx(1);
             farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
         }
 
         //-1
-        if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
-            farmer.setDx(-2*(Main.scale()-3));
+        if ((sprint) && farmer.getDX() == -1) {
+            farmer.setDx(-2*1);
             //1
-        } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
-            farmer.setDx(2*(Main.scale()-3));
-        } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
-            farmer.setDy(-2*(Main.scale()-3));
-        } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
-            farmer.setDy(2*(Main.scale()-3));
+        } else if ((sprint) && farmer.getDX() == 1) {
+            farmer.setDx(2*1);
+        } else if ((sprint) && farmer.getDY() == -1) {
+            farmer.setDy(-2*1);
+        } else if ((sprint) && farmer.getDY() == 1) {
+            farmer.setDy(2*1);
         }
 
     }
@@ -1017,20 +1134,26 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             }
         }
 
-        if ((key == 81) ){
-            //inventory.add(new Inventory(new ImageIcon("assets/icons/empty.png"), 0, 0, 64, 64, 5, 11));
-            //inventory.add(new Inventory(new ImageIcon("assets/plants/testPlant/testPlant.png"), 0, 0, 64, 64, 23, 15));
-            // for (Inventory i: inventory){
-            //     if (i.getSlot() == 2)
-            //         i.setPic(new ImageIcon("assets/plants/testPlant/testPlant.png"));
-            //         i.setQuantity(25);
-            // }
-            testaddItemInInventory(1, new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 64);
-            testaddItemInInventory(5, new ImageIcon("assets/plants/testPlant/testPlant.png"),64);
-            testaddItemInInventory(2, new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"),64);
-            testaddItemInInventory(3, new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"),64);
+        // if ((key == 81) ){
+        //     //inventory.add(new Inventory(new ImageIcon("assets/icons/empty.png"), 0, 0, 64, 64, 5, 11));
+        //     //inventory.add(new Inventory(new ImageIcon("assets/plants/testPlant/testPlant.png"), 0, 0, 64, 64, 23, 15));
+        //     // for (Inventory i: inventory){
+        //     //     if (i.getSlot() == 2)
+        //     //         i.setPic(new ImageIcon("assets/plants/testPlant/testPlant.png"));
+        //     //         i.setQuantity(25);
+        //     // }
+        //     testaddItemInInventory(1, new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 64);
+        //     testaddItemInInventory(5, new ImageIcon("assets/plants/testPlant/testPlant.png"),64);
+        //     testaddItemInInventory(2, new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"),64);
+        //     testaddItemInInventory(3, new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"),64);
+        // }
+        
+        if (key ==81){
+            cash = 10000;
+            testaddItemInInventory(12, new ImageIcon("assets/plants/gooseberry/gooseberry3.png"), 16);
+            testaddItemInInventory(13, new ImageIcon("assets/plants/kornflower/kornflower3.png"), 16);
+            testaddItemInInventory(14, new ImageIcon("assets/plants/celestialWheat/celestialwheat3.png"), 16);
         }
-
         
 
         if (key == 87) {
@@ -1114,8 +1237,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             //add load system here
         }   
 
-        if (showInvetory == true && m.getButton() == 1){
+        if (showInvetory == true && m.getButton() == 1 && showTerminal == false){
             moveItemsInInventory(m.getX(), m.getY());
+        }
+
+        if (showInvetory == true && m.getButton() == 1 && showTerminal == true){
+            sellItem(m.getX(), m.getY());
         }
 
         if ((saveBoolean == true) && (showPause == true)){
@@ -1138,13 +1265,21 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         // }
         // }
 
-        if (((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig")) && (m.getButton() == 3) && ((farmer.getDX() == 0) && (farmer.getDY() == 0))) {
-            // for (Crops c : cropList) {
-            //     if (c.Collision(farmer) == true) {
-            //         pickUpCrops();
-            //     }
-            // }
-            pickUpCrops();
+        if (((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig")) && (m.getButton() == 3) && ((farmer.getDX() == 0) && (farmer.getDY() == 0))) { 
+            for (Crops c : cropList) {
+                if (c.Collision(farmer) == true) {
+                    //(c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3")
+                    if ((c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3.png") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3.png") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3.png")){
+                        addItemInInventory(c.getPic(), 1);
+                        cropList.remove(c);
+                        for (Planters p: planters){
+                            if (p.Collision(farmer) == true){
+                                p.setHasCrop(false);
+                            }
+                        }
+                    }
+                }
+            }
             
         }
 
@@ -1252,6 +1387,17 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 showRepairs=true;
             }
 
+            if ((m.getX() >= gooseberryShop.getX() && m.getX() <= gooseberryShop.getX() + gooseberryShop.getW()) && (m.getY() >= gooseberryShop.getY() && m.getY() <= gooseberryShop.getY() + gooseberryShop.getH())){
+                addItemInInventory(new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"), 1);
+            }
+            else if ((cash >= 100) && (m.getX() >= kornflowerShop.getX() && m.getX() <= kornflowerShop.getX() + kornflowerShop.getW()) && (m.getY() >= kornflowerShop.getY() && m.getY() <= kornflowerShop.getY() + kornflowerShop.getH())){
+                addItemInInventory(new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 1);
+                cash -= 100;
+            }
+            else if ((cash >= 20) && (m.getX() >= celestialWheatShop.getX() && m.getX() <= celestialWheatShop.getX() + celestialWheatShop.getW()) && (m.getY() >= celestialWheatShop.getY() && m.getY() <= celestialWheatShop.getY() + celestialWheatShop.getH())){
+                addItemInInventory(new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"), 1);
+                cash -= 20;
+            }
         }
 
     }
@@ -1268,5 +1414,4 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     @Override
     public void mouseExited(java.awt.event.MouseEvent m) {
     }
-
 }
