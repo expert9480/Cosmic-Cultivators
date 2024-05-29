@@ -101,7 +101,10 @@ public class Farmer {
 			y=screenH-(height/2);
 	}
 	
-	public boolean Collision(Farmer b) {
+	// public boolean Collision(Farmer b) {
+	// 	return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
+	// }
+	public boolean Collision(Airlocks b) {
 		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
 	}
 }

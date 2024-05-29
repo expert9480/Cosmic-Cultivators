@@ -8,6 +8,8 @@ public class Airlocks {
 	private int height;
     private String curScreen;
     private String gotoScreen;
+	private int finalX;
+	private int finalY;
 
 	public Airlocks() {
 		pic=new ImageIcon();
@@ -17,9 +19,11 @@ public class Airlocks {
 		height=0;
         curScreen = "";
         gotoScreen = "";
+		finalX = 0;
+		finalY = 0;
 	}
 
-    public Airlocks(ImageIcon s, int x1, int y1, int w1, int h1, String cS, String gtS) {
+    public Airlocks(ImageIcon s, int x1, int y1, int w1, int h1, String cS, String gtS, int fX, int fY) {
 		pic=s;
 		x=x1;
 		y=y1;
@@ -27,6 +31,8 @@ public class Airlocks {
 		height=h1;
         curScreen = cS;
         gotoScreen = gtS;
+		finalX = fX;
+		finalY = fY;
 	}
 
     public void setX(int c) {
@@ -70,6 +76,18 @@ public class Airlocks {
 	public String getGTS() {
 		return gotoScreen;
 	}
-
+	
+	public int getFX() {
+		return finalX;
+	}
+	public int getFY() {
+		return finalY;
+	}
+	public void setFX(int c) {
+		finalX=c;
+	}
+	public void setFY(int c){
+		finalY=c;
+	}
 
 }

@@ -32,7 +32,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     private String screen, font;
     private Sound sound;
     private Icons play, playSelected, logo, inventoryMenu, house, house2, save, sbg, load, hotbar, floorGreenhouse, glassGreenhouse, spaceBackground, controls, commonWalkWay, ground;
-    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop;
+    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop, sellBlank;
     private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs;
     private Farmer farmer;
     private ArrayList<Crops> cropList;
@@ -107,7 +107,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         spaceBackground = new Icons(new ImageIcon("assets/icons/spaceBackground.png"), 0, 0, screenWidth, screenHeight);
 
-        controls = new Icons(new ImageIcon("assets/icons/Controls.png"), 0, 0, 96*2, 69*2);
+        controls = new Icons(new ImageIcon("assets/icons/Controls.png"), 0, 0, 135*2, 90*2);
 
         commonWalkWay = new Icons(new ImageIcon("assets/buildings/commonareaground.png"), (screenWidth - (256 * (Main.scale() - 3))) / 2, (screenHeight - (256 * (Main.scale() - 3))) / 2, (256 * (Main.scale() - 3)), (256 * (Main.scale() - 3)));
         //ground = new Icons(new ImageIcon("assets/buildings/ground.png"), (screenWidth - (533 * (Main.scale() - 2))) / 2, (screenHeight - (454 * (Main.scale() - 2))) / 2, (533* (Main.scale())) / 2, 454 * (Main.scale()) / 2);
@@ -138,6 +138,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         kornflowerShop = new Icons(new ImageIcon("assets/terminal/kornflowerShop.png"), ((shopBlank.getX()) - 30 - (shopBlank.getW()/2)-(16*(Main.scale()-2))), ((screenHeight - (16 * (Main.scale() - 2))) / 2) + ((Main.scale()-2)*15), 16*(Main.scale()-2), 16*(Main.scale()-2));
         celestialWheatShop = new Icons(new ImageIcon("assets/terminal/celestialWheatShop.png"), shopBlank.getX(), terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 85, 16*(Main.scale()-2), 16*(Main.scale()-2));
         gooseberryShop = new Icons(new ImageIcon("assets/terminal/gooseberryShop.png"), shopBlank.getX() + 85, terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 105, 16*(Main.scale()-2), 16*(Main.scale()-2));
+
+        sellBlank = new Icons(new ImageIcon("assets/terminal/sellMenu.png"), terminalMainScreen.getX(), terminalMainScreen.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
 
         planters = new ArrayList<Planters>();
     }   
@@ -348,17 +350,18 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     public void createAirlockArray() {
         // add the other airlocks here
         //if position is incorrect on larger screen make an if statement that will have to array input lists
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (house2.getX() + (house2.getW()/2)) - (32 * (Main.scale() + 2)) / 2, house2.getY() + house2.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "home", "mainFarm"));
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (house2.getX() + (house2.getW()/2)) - (32 * (Main.scale() + 2)) / 2, house2.getY() + house2.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "home", "mainFarm", (commonWalkWay.getX() + (commonWalkWay.getW()/2)-(farmer.getW()/2)), commonWalkWay.getY()));
         //floorGreenhouse.getX() + (floorGreenhouse.getW()/2)) - (32 * (Main.scale() + 2)) / 2
         //floorGreenhouse.getY() + floorGreenhouse.getH() - (Main.scale() * 2)
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (floorGreenhouse.getX() + (floorGreenhouse.getW())), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "greenhouse1", "mainFarm"));
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (floorGreenhouse.getX() + (floorGreenhouse.getW())), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "greenhouse2", "mainFarm"));
+
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (floorGreenhouse.getX() + (floorGreenhouse.getW())), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "greenhouse1", "mainFarm", (commonWalkWay.getX()), commonWalkWay.getY() + (commonWalkWay.getH()/3)-65));
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (floorGreenhouse.getX() + (floorGreenhouse.getW())), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "greenhouse2", "mainFarm", (commonWalkWay.getX()), commonWalkWay.getY() + (commonWalkWay.getH()/3)+165));
         
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() - 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "home"));
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() - 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "home", house2.getX() + (house2.getW()/2)-(farmer.getW()/2), house2.getY() + house2.getH()));
         //greenhouseBig -  deactivated since there is no greenhouseBig 
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() + commonWalkWay.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "mainFarm"));
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + (commonWalkWay.getH()/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse1"));
-        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + ((commonWalkWay.getH()*2)/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse2"));
+        //airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() + (commonWalkWay.getW()/2)) - (32 * (Main.scale() + 2)) / 2, commonWalkWay.getY() + commonWalkWay.getH() - (Main.scale() * 2), 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "mainFarm"));
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + (commonWalkWay.getH()/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse1", floorGreenhouse.getX() + (floorGreenhouse.getW()), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2));
+        airlocks.add(new Airlocks(new ImageIcon("assets/buildings/airlock.png"), (commonWalkWay.getX() - 32 * (Main.scale() + 2)), commonWalkWay.getY() + ((commonWalkWay.getH()*2)/3) - (32 * (Main.scale() + 2)) / 2, 32 * (Main.scale() + 2), 32 * (Main.scale() + 2), "mainFarm", "greenhouse2", floorGreenhouse.getX() + (floorGreenhouse.getW()), floorGreenhouse.getY() + (floorGreenhouse.getH()/2) - (32 * (Main.scale() + 2)) / 2));
     }
 
     public void drawPlanters(Graphics g2d) {
@@ -410,7 +413,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         curtime=((System.currentTimeMillis() - time) / 1000);
         for (Planters p: planters){
             for (Crops c: cropList){
-                if ((p.Collision(c) == true)){
+                if ((p.Collision(c) == true) && (p.getScreen() == screen)){
                     if ((c.getPic().getDescription()=="assets/plants/kornflower/kornflower1.png") && (p.getWatered()==true) && ((curtime-c.getStartTime() >= 120.00) && (curtime-c.getStartTime() <= 121.00))){
                         c.setPic(new ImageIcon("assets/plants/kornflower/kornflower2.png"));
                         c.setStartTime(curtime);
@@ -597,6 +600,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
             if (showSell == true){
                 //draw sell screen
+                g2d.drawImage(sellBlank.getPic().getImage(), sellBlank.getX(), sellBlank.getY(), sellBlank.getW(), sellBlank.getH(), this);
+                sellBlank.setX(terminalMainScreen.getX());
                 
             }
             else if (showShop == true){
@@ -1060,7 +1065,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     public void keyPressed(KeyEvent e) {
 
         key = e.getKeyCode();
-        System.out.println(key);
+        //System.out.println(key);
 
         if (key == 16) {
             sprint = true;
@@ -1209,52 +1214,58 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         
         //add the watering animation
         if ((key==70) && ((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig"))){
-            for (Planters p: planters){
-                if (p.Collision(farmer)){
-                    for (Crops c: cropList){
-                        if (p.Collision(c) && (p.getWatered() == false)){
-                            if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
-                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterDown.gif"));
-                            }
-                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
-                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterUp.gif"));
-                            }
-                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
-                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterLeft.gif"));
-                            }
-                            else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
-                                farmer.setPic(new ImageIcon("assets/farmer/farmerWaterRight.gif"));
-                            }
-                
-                            int delay = 350;
-                            javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
-                                @Override
-                                public void actionPerformed(ActionEvent e) {
-                                    if ((farmer.getDX() == 0) && (farmer.getDY() == 0)){
-                                        p.setWatered(true);
-                                        c.setStartTime(curtime);
+            for (Airlocks a: airlocks){
+                if (!(farmer.Collision(a))) {
+                    for (Planters p: planters){
+                        if (p.Collision(farmer)){
+                            for (Crops c: cropList){
+                                if (p.Collision(c) && (p.getWatered() == false)){
+                                    if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/farmerWaterDown.gif"));
                                     }
-                
-                                    if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterown.gif")){
-                                        farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/farmerWaterUp.gif"));
                                     }
-                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterUp.gif")){
-                                        farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/farmerWaterLeft.gif"));
                                     }
-                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterLeft.gif")){
-                                        farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                    else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
+                                        farmer.setPic(new ImageIcon("assets/farmer/farmerWaterRight.gif"));
                                     }
-                                    else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterRight.gif")){
-                                        farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
-                                    }
+                        
+                                    int delay = 350;
+                                    javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            if ((farmer.getDX() == 0) && (farmer.getDY() == 0)){
+                                                p.setWatered(true);
+                                                c.setStartTime(curtime);
+                                            }
+                        
+                                            if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterown.gif")){
+                                                farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                            }
+                                            else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterUp.gif")){
+                                                farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                            }
+                                            else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterLeft.gif")){
+                                                farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                            }
+                                            else if ((farmer.getPic().getDescription() == "assets/farmer/farmerWaterRight.gif")){
+                                                farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                            }
+                                        }
+                                    });
+                                    timer.setRepeats(false);
+                                    timer.start();
                                 }
-                            });
-                            timer.setRepeats(false);
-                            timer.start();
+                            }
                         }
                     }
                 }
             }
+
+            
         }
 
         for (Airlocks a : airlocks) {
@@ -1395,57 +1406,63 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         // }
 
         if (((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig")) && (m.getButton() == 3) && ((farmer.getDX() == 0) && (farmer.getDY() == 0))) { 
-            for (Crops c : cropList) {
-                if (c.Collision(farmer) == true) {
-                    //(c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3")
-                    if ((c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3.png") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3.png") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3.png")){
-                        addItemInInventory(c.getPic(), 1);
-                        cropList.remove(c);
-                        for (Planters p: planters){
-                            if (p.Collision(farmer) == true){
-                                p.setHasCrop(false);
-                                if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
-                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
-                                }
-                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
-                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantUp.gif"));
-                                }
-                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
-                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantLeft.gif"));
-                                }
-                                else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
-                                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
-                                }
-                                
-                    
-                                int delay = 950;
-                                javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
-                                    @Override
-                                    public void actionPerformed(ActionEvent e) {
-                                        //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
-                                            
-                    
-                                        if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
-                                            farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+            for (Airlocks a: airlocks){
+                if (!(farmer.Collision(a))) {
+                    for (Crops c : cropList) {
+                        if (c.Collision(farmer) == true) {
+                            //(c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3")
+                            if ((c.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3.png") || (c.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3.png") || (c.getPic().getDescription() == "assets/plants/kornflower/kornflower3.png")){
+                                addItemInInventory(c.getPic(), 1);
+                                cropList.remove(c);
+                                for (Planters p: planters){
+                                    if (p.Collision(farmer) == true){
+                                        p.setHasCrop(false);
+                                        if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
                                         }
-                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantUp.gif")){
-                                            farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantUp.gif"));
                                         }
-                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantLeft.gif")){
-                                            farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantLeft.gif"));
                                         }
-                                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantRight.gif")){
-                                            farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
+                                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
                                         }
+                                        
+                            
+                                        int delay = 950;
+                                        javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                                            @Override
+                                            public void actionPerformed(ActionEvent e) {
+                                                //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
+                                                    
+                            
+                                                if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
+                                                    farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                                }
+                                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantUp.gif")){
+                                                    farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                                }
+                                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantLeft.gif")){
+                                                    farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                                }
+                                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantRight.gif")){
+                                                    farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                                }
+                                            }
+                                        });
+                                        timer.setRepeats(false);
+                                        timer.start();
                                     }
-                                });
-                                timer.setRepeats(false);
-                                timer.start();
+                                }
                             }
                         }
                     }
                 }
             }
+
+            
             
         }
 
@@ -1458,50 +1475,56 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 // 				plant
 
         if (((screen == "greenhouse1") || (screen == "greenhouse2") || (screen == "greenhouseBig")) && (m.getButton() == 3) && ((farmer.getDX() == 0) && (farmer.getDY() == 0))) {
+            for (Airlocks a: airlocks){
+                if (!(farmer.Collision(a))) {
+                    if (addCrop()){
+                        //addCrop();
+                        if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
+                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
+                        }
+                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
+                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantUp.gif"));
+                        }
+                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
+                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantLeft.gif"));
+                        }
+                        else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
+                            farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
+                        }
+                        
+            
+                        int delay = 950;
+                        javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
+                                    
+            
+                                if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantUp.gif")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantLeft.gif")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
+                                }
+                                else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantRight.gif")){
+                                    farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
+                                }
+                            }
+                        });
+                        timer.setRepeats(false);
+                        timer.start();
+                    }
+                }
+            }
+
             //first check if correct item is being held
             //check orientation of farmer
             //then add crop
 
-            if (addCrop()){
-                //addCrop();
-                if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
-                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantDown.gif"));
-                }
-                else if ((farmer.getPic().getDescription() == "assets/farmer/walkUp.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleUp.png")){
-                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantUp.gif"));
-                }
-                else if ((farmer.getPic().getDescription() == "assets/farmer/walkLeft.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleLeft.png")){
-                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantLeft.gif"));
-                }
-                else if ((farmer.getPic().getDescription() == "assets/farmer/walkRight.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleRight.png")){
-                    farmer.setPic(new ImageIcon("assets/farmer/farmerPlantRight.gif"));
-                }
-                
-    
-                int delay = 950;
-                javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //if ((farmer.getDX() == 0) && (farmer.getDY() == 0))
-                            
-    
-                        if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantDown.gif")){
-                            farmer.setPic(new ImageIcon("assets/farmer/idleDown.png"));
-                        }
-                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantUp.gif")){
-                            farmer.setPic(new ImageIcon("assets/farmer/idleUp.png"));
-                        }
-                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantLeft.gif")){
-                            farmer.setPic(new ImageIcon("assets/farmer/idleLeft.png"));
-                        }
-                        else if ((farmer.getPic().getDescription() == "assets/farmer/farmerPlantRight.gif")){
-                            farmer.setPic(new ImageIcon("assets/farmer/idleRight.png"));
-                        }
-                    }
-                });
-                timer.setRepeats(false);
-                timer.start();
-            }
+            
 
             
             
@@ -1521,6 +1544,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                         screen = a.getGTS();
                         farmer.setPic(temp);
                         a.setPic(new ImageIcon("assets/buildings/airlock.png"));
+                        farmer.setX(a.getFX());
+                        farmer.setY(a.getFY());
                     }
                 });
                 timer.setRepeats(false);
