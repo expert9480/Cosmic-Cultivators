@@ -5,7 +5,7 @@ import java.io.*;
 public class Sound
 {
 	Clip clip = null;
-	public void playmusic(String musicfile, boolean repeat) {
+	public void playMusic(String musicfile, boolean repeat) {
 		File soundFile = new File(musicfile);
 		try {
 	//		Clip clip = AudioSystem.getClip();
@@ -28,7 +28,50 @@ public class Sound
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			//System.out.println(e);
 		}
 	}
+
+	// public void stopmusic(){
+	// 	clip.stop();
+	// 	clip.flush();
+	// 	clip.close();
+	// }
+	public void playmusic(String musicfile, boolean repeat) {
+		File soundFile = new File(musicfile);
+		try {
+			if(musicfile.equals("stop")){
+				if (clip != null && clip.isRunning()) {
+					clip.stop();
+					clip.flush();
+					clip.close();
+				}
+			}
+			else {
+				try (AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundFile)) {
+					if (clip != null && clip.isRunning()){
+						clip.stop();
+						clip.flush();
+						clip.close();
+					}
+					clip = AudioSystem.getClip();
+					clip.open(inputStream);
+					if (repeat){
+						clip.loop(clip.LOOP_CONTINUOUSLY);
+					}
+					clip.start();
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			//System.out.println(e);
+		}
+	}
+
+    public void stopmusic(){
+        clip.stop();
+        clip.flush();
+        clip.close();
+    }
 }

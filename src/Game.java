@@ -30,10 +30,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     private BufferedImage back;
     private int key, count, lineCount, cash, selectedItem;
     private String screen, font;
-    private Sound sound;
+    private Sound selectSound, walkSound, waterSound, SolarWinds, whenImFarming;
     private Icons play, playSelected, logo, inventoryMenu, house, house2, save, sbg, load, hotbar, floorGreenhouse, glassGreenhouse, spaceBackground, controls, commonWalkWay, ground;
     private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop, sellBlank;
-    private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs;
+    private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs, toggleWalkSound;
     private Farmer farmer;
     private ArrayList<Crops> cropList;
     private ArrayList<Inventory> inventory;
@@ -59,7 +59,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         screenHeight = Main.screenSizeFigureOuter();
 
         key = -1;
-        sound = new Sound();
+        //sound = new Sound();
+        selectSound = new Sound();
+        walkSound = new Sound();
+        toggleWalkSound = false;
+        waterSound = new Sound();
+        SolarWinds = new Sound();
+        whenImFarming = new Sound();
+
         screen = "start";
         count = 0;
         time=System.currentTimeMillis();
@@ -144,9 +151,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         planters = new ArrayList<Planters>();
     }   
 
+    
+
     public void screen(Graphics g2d) {
         switch (screen) {
             case "start":
+                
                 // Start Screen
                 setEmptyInvetory();
                 drawStartScreen(g2d);
@@ -157,7 +167,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 }
                 //createSave();
                 break;
-            case "mainFarm":
+            case "mainFarm":    
                 cropGrowth();
                 g2d.drawImage(spaceBackground.getPic().getImage(), 0, 0, screenWidth, screenHeight, this);
                 //g2d.drawImage(ground.getPic().getImage(), ground.getX(), ground.getY(), ground.getW(), ground.getH(), this);
@@ -173,7 +183,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 drawHotbar(g2d);
                 drawPause(g2d);
                 break;
-            case "greenhouse1":
+            case "greenhouse1": 
                 cropGrowth();
                 g2d.drawImage(spaceBackground.getPic().getImage(), 0, 0, screenWidth, screenHeight, this);
                 g2d.drawImage(floorGreenhouse.getPic().getImage(), floorGreenhouse.getX(), floorGreenhouse.getY(), floorGreenhouse.getW(), floorGreenhouse.getH(), this);
@@ -643,6 +653,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         for (Inventory i: inventory){
             if (i.getX() + i.getW() >= x && i.getX() <= x && i.getY() + i.getH() >= y&& i.getY() <= y){
                 key3=i.getSlot();
+                selectSound.playmusic("assets/sounds/select.wav", false);
             }
         }
 
@@ -871,11 +882,13 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 // key1=Integer.parseInt(key);
                 if (i.getX() + i.getW() >= x && i.getX() <= x && i.getY() + i.getH() >= y&& i.getY() <= y){
                     key1=i.getSlot();
+                    selectSound.playmusic("assets/sounds/select.wav", false);
                 }
             }
             else if ((key1 != -1) && (key2 == -1)){
                 if (i.getX() + i.getW() >= x && i.getX() <= x && i.getY() + i.getH() >= y&& i.getY() <= y){
                     key2=i.getSlot();
+                    selectSound.playmusic("assets/sounds/select.wav", false);
                 }
             }
         }
@@ -926,6 +939,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         return a.getX() + a.getW() >= b.getX() && a.getX() <= b.getX() + b.getW() && a.getY() + a.getH() >= b.getY()
                 && a.getY() <= b.getY() + b.getH();
     }
+
+    
 
     public void createSave(){
         File save = new File("save.txt");
@@ -1048,7 +1063,31 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         g2d.clearRect(0, 0, getSize().width, getSize().height);
 
         // start graphics here
+        
         screen(g2d);
+        if (screen == "start"){
+            SolarWinds.playMusic("assets/sounds/SolarWinds.wav", true);
+        }
+        else if (screen != "start"){
+            SolarWinds.stopmusic();
+            whenImFarming.playMusic("assets/sounds/me_when_Im_farming.wav", true);
+            int delay = 350;
+            javax.swing.Timer timer = new javax.swing.Timer(delay, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+        else{
+            whenImFarming.stopmusic();
+        }
+        
+        
+
+        
 
         // end
         twoDgraph.drawImage(back, null, 0, 0);
@@ -1168,15 +1207,19 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         if (key == 49){
             selectedItem = 1;
+            selectSound.playmusic("assets/sounds/select.wav", false);
         }
         if (key == 50){
             selectedItem = 2;
+            selectSound.playmusic("assets/sounds/select.wav", false);
         }
         if (key == 51){
             selectedItem = 3;
+            selectSound.playmusic("assets/sounds/select.wav", false);
         }
         if (key == 52){
             selectedItem = 4;
+            selectSound.playmusic("assets/sounds/select.wav", false);
         }
 
         if ((key == 69) && (screen == "home") && (showTerminal == true)) {
@@ -1220,6 +1263,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                         if (p.Collision(farmer)){
                             for (Crops c: cropList){
                                 if (p.Collision(c) && (p.getWatered() == false)){
+                                    waterSound.playmusic("assets/sounds/waterplant.wav", false);
                                     if ((farmer.getPic().getDescription() == "assets/farmer/walkDown.gif") || (farmer.getPic().getDescription() == "assets/farmer/idleDown.png")){
                                         farmer.setPic(new ImageIcon("assets/farmer/farmerWaterDown.gif"));
                                     }
@@ -1327,6 +1371,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             farmer.setDy(1);
         }
 
+        //attempt at walk sound
+        if ((farmer.getDX() != 0) || (farmer.getDY() != 0)) {
+                walkSound.playmusic("assets/sounds/walknoise.wav", true);
+        }
+        else {
+            walkSound.stopmusic();
+        }
+
     }
 
     @Override
@@ -1370,10 +1422,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
         if ((playBoolean == true) && (screen == "start")) {
             screen = "mainFarm";
+            selectSound.playmusic("assets/sounds/select.wav", false);
         }
 
         if ((loadBoolean == true) && (screen == "start")) {
             screen = "mainFarm";
+            selectSound.playmusic("assets/sounds/select.wav", false);
             //add load system here
         }   
 
@@ -1563,18 +1617,21 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         if (screen == "home" && (m.getButton() == 1) && (Collision(farmer, terminalHitBox)) && (farmer.getDX() == 0) && (farmer.getDY() == 0) && (showTerminal == true)) {
             if ((m.getX() >= terminalShopButton.getX() && m.getX() <= terminalShopButton.getX() + terminalShopButton.getW()) && (m.getY() >= terminalShopButton.getY() && m.getY() <= terminalShopButton.getY() + terminalShopButton.getH())){
                 //add shop screen
+                selectSound.playmusic("assets/sounds/select.wav", false);
                 showShop=true;
                 showSell=false;
                 showRepairs=false;
             }
             else if ((m.getX() >= terminalSellButton.getX() && m.getX() <= terminalSellButton.getX() + terminalSellButton.getW()) && (m.getY() >= terminalSellButton.getY() && m.getY() <= terminalSellButton.getY() + terminalSellButton.getH())){
                 //add sell screen
+                selectSound.playmusic("assets/sounds/select.wav", false);
                 showShop=false;
                 showSell=true;
                 showRepairs=false;
             }
             else if ((m.getX() >= terminalRepairsButton.getX() && m.getX() <= terminalRepairsButton.getX() + terminalRepairsButton.getW()) && (m.getY() >= terminalRepairsButton.getY() && m.getY() <= terminalRepairsButton.getY() + terminalRepairsButton.getH())){
                 //add repairs screen
+                selectSound.playmusic("assets/sounds/select.wav", false);
                 showShop=false;
                 showSell=false;
                 showRepairs=true;
@@ -1582,13 +1639,16 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
             //if (showSell == true){
                 if ((m.getX() >= gooseberryShop.getX() && m.getX() <= gooseberryShop.getX() + gooseberryShop.getW()) && (m.getY() >= gooseberryShop.getY() && m.getY() <= gooseberryShop.getY() + gooseberryShop.getH())){
+                    selectSound.playmusic("assets/sounds/select.wav", false);
                     addItemInInventory(new ImageIcon("assets/plants/gooseberry/gooseberrySeeds.gif"), 1);
                 }
                 else if ((cash >= 100) && (m.getX() >= kornflowerShop.getX() && m.getX() <= kornflowerShop.getX() + kornflowerShop.getW()) && (m.getY() >= kornflowerShop.getY() && m.getY() <= kornflowerShop.getY() + kornflowerShop.getH())){
+                    selectSound.playmusic("assets/sounds/select.wav", false);
                     addItemInInventory(new ImageIcon("assets/plants/kornflower/kornflowerSeeds.png"), 1);
                     cash -= 100;
                 }
                 else if ((cash >= 20) && (m.getX() >= celestialWheatShop.getX() && m.getX() <= celestialWheatShop.getX() + celestialWheatShop.getW()) && (m.getY() >= celestialWheatShop.getY() && m.getY() <= celestialWheatShop.getY() + celestialWheatShop.getH())){
+                    selectSound.playmusic("assets/sounds/select.wav", false);
                     addItemInInventory(new ImageIcon("assets/plants/celestialWheat/celestialWheatSeeds.png"), 1);
                     cash -= 20;
                 }
