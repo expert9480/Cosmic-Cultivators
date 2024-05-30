@@ -7,9 +7,6 @@ public class Icons {
 	private int y;
 	private int width;
 	private int height;
-	private int dx;
-	private int dy;
-	private boolean moveup;
 	
 	public Icons() {
 		pic=new ImageIcon();
@@ -17,9 +14,6 @@ public class Icons {
 		y=0;
 		width=0;
 		height=0;
-		dx=0;
-		dy=0;
-		moveup=false;
 	}
 	//still pictures
 	public Icons(ImageIcon s, int x1, int y1, int w1, int h1) {
@@ -77,21 +71,6 @@ public class Icons {
 		return height;
 	}
 
-	// public void setDx(int c) {
-	// 	dx=c;
-	// }
-	// public void setDy(int c){
-	// 	dy=c;
-	// }
-	// public void setmoveup(){
-	// 	moveup=!(moveup);
-	// }
-
-	// public void moveImage(){
-	// 	if (moveup){
-	// 		y+=dy;
-	// 	}
-	// }
 
 }
 

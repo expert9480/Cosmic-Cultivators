@@ -9,8 +9,6 @@ public class Farmer {
 	private int dy;
 	private int width;
 	private int height;
-	private boolean movert;
-	private boolean movedn;
 	
 	// public Farmer() {
 	// 	pic="";
@@ -33,8 +31,6 @@ public class Farmer {
 		dy=dy1;
 		height=h;
 		width=w;
-		movert=r;
-		movedn=d;
 	}
 	public void setDx(int c) {
 		dx=c;
@@ -101,9 +97,6 @@ public class Farmer {
 			y=screenH-(height/2);
 	}
 	
-	// public boolean Collision(Farmer b) {
-	// 	return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
-	// }
 	public boolean Collision(Airlocks b) {
 		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
 	}

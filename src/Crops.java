@@ -7,8 +7,6 @@ public class Crops {
 	private int y;
 	private int width;
 	private int height;
-	private int dx;
-	private int dy;
 	private String screen;
 	private Boolean waterStatus;
 	private double startTime;
@@ -21,8 +19,6 @@ public class Crops {
 		y=0;
 		width=0;
 		height=0;
-		dx=0;
-		dy=0;
 		screen = "";
 		waterStatus = false;
 		startTime = 0;
@@ -106,21 +102,6 @@ public class Crops {
 	public boolean Collision(Farmer b) {
 		return getX()+getW()>=b.getX()&&getX()<=b.getX()+b.getW()&&getY()+getH()>=b.getY()&&getY()<=b.getY()+b.getH();
 	}
-	// public void setDx(int c) {
-	// 	dx=c;
-	// }
-	// public void setDy(int c){
-	// 	dy=c;
-	// }
-	// public void setmoveup(){
-	// 	moveup=!(moveup);
-	// }
-
-	// public void moveImage(){
-	// 	if (moveup){
-	// 		y+=dy;
-	// 	}
-	// }
 
 }
 
