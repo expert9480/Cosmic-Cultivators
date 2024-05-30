@@ -32,8 +32,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
     private String screen, font;
     private Sound selectSound, walkSound, waterSound, SolarWinds, whenImFarming;
     private Icons play, playSelected, logo, inventoryMenu, house, house2, save, sbg, load, hotbar, floorGreenhouse, glassGreenhouse, spaceBackground, controls, commonWalkWay, ground;
-    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop, sellBlank;
-    private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs, toggleWalkSound;
+    private Icons kash, terminalHitBox, terminalMainScreen, terminalShopButton, terminalSellButton, terminalRepairsButton, shopBlank, kornflowerShop, celestialWheatShop, gooseberryShop, sellBlank, celestialWheatInfo, gooseBerryInfo, kornFlowerInfo;
+    private Boolean playBoolean, sprint, showInvetory, airlockCreation, showPause, saveBoolean, loadBoolean, showHotbar, showTerminal, showSell, showShop, showRepairs, toggleWalkSound, toggleCelestialWheatInfo, toggleGooseBerryInfo, toggleKornFlowerInfo;
     private Farmer farmer;
     private ArrayList<Crops> cropList;
     private ArrayList<Inventory> inventory;
@@ -146,7 +146,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         celestialWheatShop = new Icons(new ImageIcon("assets/terminal/celestialWheatShop.png"), shopBlank.getX(), terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 85, 16*(Main.scale()-2), 16*(Main.scale()-2));
         gooseberryShop = new Icons(new ImageIcon("assets/terminal/gooseberryShop.png"), shopBlank.getX() + 85, terminalMainScreen.getY() + (terminalMainScreen.getH()/2) - 105, 16*(Main.scale()-2), 16*(Main.scale()-2));
 
-        sellBlank = new Icons(new ImageIcon("assets/terminal/sellMenu.png"), terminalMainScreen.getX(), terminalMainScreen.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+        sellBlank = new Icons(new ImageIcon("assets/terminal/sellNew.png"), terminalMainScreen.getX(), terminalMainScreen.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+        celestialWheatInfo = new Icons(new ImageIcon("assets/terminal/celestialWheatInfo.png"), sellBlank.getX(), sellBlank.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+        gooseBerryInfo = new Icons(new ImageIcon("assets/terminal/gooseBerryInfo.png"), sellBlank.getX(), sellBlank.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+        kornFlowerInfo = new Icons(new ImageIcon("assets/terminal/kornFlowerInfo.png"), sellBlank.getX(), sellBlank.getY(), 144*(Main.scale()-2), 144*(Main.scale()-2));
+
+        toggleCelestialWheatInfo = false;
+        toggleGooseBerryInfo = false;
+        toggleKornFlowerInfo = false;
 
         planters = new ArrayList<Planters>();
     }   
@@ -613,6 +620,15 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 g2d.drawImage(sellBlank.getPic().getImage(), sellBlank.getX(), sellBlank.getY(), sellBlank.getW(), sellBlank.getH(), this);
                 sellBlank.setX(terminalMainScreen.getX());
                 
+                if (toggleKornFlowerInfo == true){
+                    g2d.drawImage(kornFlowerInfo.getPic().getImage(), kornFlowerInfo.getX(), kornFlowerInfo.getY(), kornFlowerInfo.getW(), kornFlowerInfo.getH(), this);
+                }
+                else if (toggleCelestialWheatInfo == true){
+                    g2d.drawImage(celestialWheatInfo.getPic().getImage(), celestialWheatInfo.getX(), celestialWheatInfo.getY(), celestialWheatInfo.getW(), celestialWheatInfo.getH(), this);
+                }
+                else if (toggleGooseBerryInfo == true){
+                    g2d.drawImage(gooseBerryInfo.getPic().getImage(), gooseBerryInfo.getX(), gooseBerryInfo.getY(), gooseBerryInfo.getW(), gooseBerryInfo.getH(), this);
+                }
             }
             else if (showShop == true){
                 //draw shop screen
@@ -633,6 +649,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                 kornflowerShop.setX(kornflowerShop.getX());
                 celestialWheatShop.setX(shopBlank.getX()+415);
                 gooseberryShop.setX(shopBlank.getX()+77);
+
+                kornFlowerInfo.setX(terminalMainScreen.getX());
+                celestialWheatInfo.setX(terminalMainScreen.getX());
+                gooseBerryInfo.setX(terminalMainScreen.getX());
 
                 showInvetory = true;
                 inventoryMenu.setX(screenWidth-10-inventoryMenu.getW());
@@ -667,6 +687,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                             if (i.getQuantity() == 0){
                                 i.setPic(new ImageIcon("assets/icons/empty.png"));
                             }
+                            toggleCelestialWheatInfo = false;
+                            toggleGooseBerryInfo = false;
+                            toggleKornFlowerInfo = true;
                             
                         }
                         else if (i.getPic().getDescription() == "assets/plants/gooseberry/gooseberry3.png"){
@@ -675,6 +698,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                             if (i.getQuantity() == 0){
                                 i.setPic(new ImageIcon("assets/icons/empty.png"));
                             }
+                            toggleCelestialWheatInfo = false;
+                            toggleGooseBerryInfo = true;
+                            toggleKornFlowerInfo = false;
                             
                         }
                         else if (i.getPic().getDescription() == "assets/plants/celestialWheat/celestialwheat3.png"){
@@ -683,6 +709,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
                             if (i.getQuantity() == 0){
                                 i.setPic(new ImageIcon("assets/icons/empty.png"));
                             }
+                            toggleCelestialWheatInfo = true;
+                            toggleGooseBerryInfo = false;
+                            toggleKornFlowerInfo = false;
                         }
                     }
                 }
@@ -1129,66 +1158,66 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
             screen = "greenhouse1";
         }
 
-        if (key == 87) {
-            //-1
-            farmer.setDy(-(Main.scale()-3));
-            farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
-        }
-        if (key == 83) {
-            farmer.setDy((Main.scale()-3));
-            farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
-        }
-        if (key == 65) {
-            //-1
-            farmer.setDx(-(Main.scale()-3));
-            farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
-        }
-        if (key == 68) {
-            farmer.setDx((Main.scale()-3));
-            farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
-        }
-
-        //-1
-        if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
-            farmer.setDx(-2*(Main.scale()-3));
-            //1
-        } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
-            farmer.setDx(2*(Main.scale()-3));
-        } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
-            farmer.setDy(-2*(Main.scale()-3));
-        } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
-            farmer.setDy(2*(Main.scale()-3));
-        }
         // if (key == 87) {
         //     //-1
-        //     farmer.setDy(-1);
+        //     farmer.setDy(-(Main.scale()-3));
         //     farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
         // }
         // if (key == 83) {
-        //     farmer.setDy(1);
+        //     farmer.setDy((Main.scale()-3));
         //     farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
         // }
         // if (key == 65) {
         //     //-1
-        //     farmer.setDx(-1);
+        //     farmer.setDx(-(Main.scale()-3));
         //     farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
         // }
         // if (key == 68) {
-        //     farmer.setDx(1);
+        //     farmer.setDx((Main.scale()-3));
         //     farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
         // }
 
         // //-1
-        // if ((sprint) && farmer.getDX() == -1) {
-        //     farmer.setDx(-2*1);
+        // if ((sprint) && farmer.getDX() == -(Main.scale()-3)) {
+        //     farmer.setDx(-2*(Main.scale()-3));
         //     //1
-        // } else if ((sprint) && farmer.getDX() == 1) {
-        //     farmer.setDx(2*1);
-        // } else if ((sprint) && farmer.getDY() == -1) {
-        //     farmer.setDy(-2*1);
-        // } else if ((sprint) && farmer.getDY() == 1) {
-        //     farmer.setDy(2*1);
+        // } else if ((sprint) && farmer.getDX() == (Main.scale()-3)) {
+        //     farmer.setDx(2*(Main.scale()-3));
+        // } else if ((sprint) && farmer.getDY() == -(Main.scale()-3)) {
+        //     farmer.setDy(-2*(Main.scale()-3));
+        // } else if ((sprint) && farmer.getDY() == (Main.scale()-3)) {
+        //     farmer.setDy(2*(Main.scale()-3));
         // }
+        if (key == 87) {
+            //-1
+            farmer.setDy(-1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkUp.gif"));
+        }
+        if (key == 83) {
+            farmer.setDy(1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkDown.gif"));
+        }
+        if (key == 65) {
+            //-1
+            farmer.setDx(-1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkLeft.gif"));
+        }
+        if (key == 68) {
+            farmer.setDx(1);
+            farmer.setPic(new ImageIcon("assets/farmer/walkRight.gif"));
+        }
+
+        //-1
+        if ((sprint) && farmer.getDX() == -1) {
+            farmer.setDx(-2*1);
+            //1
+        } else if ((sprint) && farmer.getDX() == 1) {
+            farmer.setDx(2*1);
+        } else if ((sprint) && farmer.getDY() == -1) {
+            farmer.setDy(-2*1);
+        } else if ((sprint) && farmer.getDY() == 1) {
+            farmer.setDy(2*1);
+        }
 
     }
 

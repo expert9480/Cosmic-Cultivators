@@ -56,6 +56,9 @@ public class Sound
 					}
 					clip = AudioSystem.getClip();
 					clip.open(inputStream);
+					//volume doesnt adjust
+					FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+					gainControl.setValue(-10.0f);
 					if (repeat){
 						clip.loop(clip.LOOP_CONTINUOUSLY);
 					}
