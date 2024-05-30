@@ -1372,12 +1372,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
         }
 
         //attempt at walk sound
-        if ((farmer.getDX() != 0) || (farmer.getDY() != 0)) {
-                walkSound.playmusic("assets/sounds/walknoise.wav", true);
-        }
-        else {
-            walkSound.stopmusic();
-        }
+        // if ((farmer.getDX() != 0) || (farmer.getDY() != 0)) {
+        //         walkSound.playmusic("assets/sounds/walknoise.wav", true);
+        // }
+        // else {
+        //     walkSound.stopmusic();
+        // }
 
     }
 
